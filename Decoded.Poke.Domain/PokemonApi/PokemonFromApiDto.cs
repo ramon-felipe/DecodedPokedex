@@ -1,6 +1,6 @@
 ﻿namespace Decoded.Poke.Domain.PokemonApi;
 
-public class PokemonFromApiDto
+public sealed class PokemonFromApiDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -22,6 +22,14 @@ public class PokemonCollectionController : ControllerBase
         this._decodePokeService = decodePokeService;
     }
 
+    [HttpGet]
+    public ActionResult<Pokemon> GetAll()
+    {
+        var pokemonCollection = this._decodePokeService.GetAll();
+
+        return pokemonCollection.Any() ? this.Ok(pokemonCollection) : this.NotFound();
+    }
+
     [HttpGet("{id:int}")]
     public ActionResult<Pokemon> Get(int id)
     {
@@ -38,5 +46,16 @@ public class PokemonCollectionController : ControllerBase
         return await this._decodePokeService
             .Add(request)
             .Finally(result => result.IsSuccess ? this.Ok(result.Value) : this.Problem(result.Error));
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(RemovePokemonRequest request)
+    {
+        var result = this._decodePokeService.Remove(request.Id);
+
+        if (result.IsSuccess)
+            this.NoContent();
+        
+        return this.Problem(result.Error);
     }
 }

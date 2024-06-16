@@ -1,6 +1,10 @@
-using Decoded.Poke.Infrastructure.ServicesCollection;
+using Decoded.Poke.Api.RequestValidators;
+using Decoded.Poke.Application;
 using Decoded.Poke.Application.ServicesCollection;
 using Decoded.Poke.Infrastructure.HttpClients;
+using Decoded.Poke.Infrastructure.ServicesCollection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +20,20 @@ builder.Services
     .AddApplicationServices()
     ;
 
+builder.Services
+    .AddValidatorsFromAssemblyContaining<RemovePokemonRequestValidator>()
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
+
 // builder.Services.Configure<PokeApiSettings>(builder.Configuration.GetRequiredSection(nameof(PokeApiSettings)));
 
 builder.Services
     .AddOptions<PokeApiSettings>()
     .Bind(builder.Configuration.GetSection(PokeApiSettings.Section));
+
+builder.Services
+    .AddOptions<PokeCollectionOptions>()
+    .Bind(builder.Configuration.GetSection(PokeCollectionOptions.Section));
 
 builder.Services.AddHttpClient();
 

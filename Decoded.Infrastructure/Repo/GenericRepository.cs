@@ -58,4 +58,6 @@ public class GenericRepository<T> : IRepository<T> where T : BaseEntity
 
         return Result.Success();
     }
+
+    public int Count() => _dbSet.Count();
 }
