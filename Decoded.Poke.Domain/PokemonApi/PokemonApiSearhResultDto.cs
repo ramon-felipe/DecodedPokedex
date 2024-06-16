@@ -6,16 +6,13 @@ public sealed partial class PokemonApiSearhResultDto
 {
     public string Name { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;
-    // public int PokemonId => Convert.ToInt32(ExtractPokemonIdFromUrl().Match(this.Url).Value);
+    public int PokemonId => this.ExtractPokemonId();
 
-    public string MyProperty => this.Test();
-
-    private string Test()
+    private int ExtractPokemonId()
     {
         var x = ExtractPokemonIdFromUrl().Match(this.Url);
-        var y = x.Value;
-
-        return y;
+        
+        return Convert.ToInt32(x.Groups[1].Value);
     }
 
     [GeneratedRegex("(\\d+)/?$")]
